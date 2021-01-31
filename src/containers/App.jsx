@@ -1,39 +1,34 @@
-import React, {useState , useEffect} from 'react'
-
 import Header from '../components/header'
 import Search from '../components/Search'
 import Carrousel from '../components/Carrousel'
 import Categories from '../components/Categories'
 import CarrouselItem from '../components/CarrouselItem'
 import Footer from '../components/Footer'
+import useInitialState from '../hooks/useInitialState'
 
 import '../assets/styles/App.css';
 
 
+const API = 'http://localhost:3000/initialState'
 
 const App = () => {
 
-    const [videos, setVideos] = useState([])
+    const initialState = useInitialState(API)
 
-    useEffect ( () => {
-        fetch('http://localhost:3000/initialState')
-            .then(response => response.json())
-            .then(data => setVideos(data))
-    }, [])
-    
-    
-    return(
+    return initialState.length === 0 ? <h1>Loading...</h1> : (
 
         <div className="app">
-            
+
             <Header/>
             <Search/>
 
-            {videos.mylist.length > 0 &&
+            {initialState.mylist.length > 0 &&
 
                 <Categories title="Mi lista">
                     <Carrousel>
-                       <CarrouselItem/>
+                    {initialState.mylist.map(item =>
+                        <CarrouselItem key={item.id} {...item}/>
+                    )}
                     </Carrousel>
                 </Categories>
             }
@@ -41,7 +36,7 @@ const App = () => {
 
             <Categories title="Tendecias">
                 <Carrousel>
-                    {videos.trends.map(item =>
+                    {initialState.trends.map(item =>
                         <CarrouselItem key={item.id} {...item}/>
                     )}
                 </Carrousel>
@@ -49,7 +44,7 @@ const App = () => {
 
             <Categories title="Originales">
                 <Carrousel>
-                     {videos.originals.map(item =>
+                     {initialState.originals.map(item =>
                         <CarrouselItem key={item.id} {...item}/>
                     )}                                 
                 </Carrousel>
