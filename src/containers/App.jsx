@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState , useEffect} from 'react'
 
 import Header from '../components/header'
 import Search from '../components/Search'
@@ -11,37 +11,55 @@ import '../assets/styles/App.css';
 
 
 
-const App = () => (
+const App = () => {
 
-    <div className="app">
-        <Header/>
-        <Search/>
-        
-        <Categories title="Mas vistos">
-            <Carrousel>
-                <CarrouselItem title="Pelicula01" year="2020" contentRating="Que es esto?" duration="2hs 40min"/>
-                <CarrouselItem title="Pelicula01" year="2020" contentRating="Que es esto?" duration="2hs 40min"/>
-                <CarrouselItem title="Pelicula01" year="2020" contentRating="Que es esto?" duration="2hs 40min"/>
-                <CarrouselItem title="Pelicula01" year="2020" contentRating="Que es esto?" duration="2hs 40min"/>
-            </Carrousel>
-        </Categories>
+    const [videos, setVideos] = useState([])
 
-        <Categories title="Mejor puntuados">
-            <Carrousel>
-                <CarrouselItem title="Pelicula01" year="2020" contentRating="Que es esto?" duration="2hs 40min"/>              
-                <CarrouselItem title="Pelicula01" year="2020" contentRating="Que es esto?" duration="2hs 40min"/>
-            </Carrousel>
-        </Categories>
+    useEffect ( () => {
+        fetch('http://localhost:3000/initialState')
+            .then(response => response.json())
+            .then(data => setVideos(data))
+    }, [])
+    
+    
+    return(
 
-        <Categories title="Seleecion personal">
-            <Carrousel>
-                <CarrouselItem title="Pelicula117" year="2021" contentRating="Que es esto?" duration="4hs 40min"/>               
-            </Carrousel>
-        </Categories>
+        <div className="app">
+            
+            <Header/>
+            <Search/>
 
-        <Footer/>
+            {videos.mylist.length > 0 &&
 
-    </div>
-);
+                <Categories title="Mi lista">
+                    <Carrousel>
+                       <CarrouselItem/>
+                    </Carrousel>
+                </Categories>
+            }
+
+
+            <Categories title="Tendecias">
+                <Carrousel>
+                    {videos.trends.map(item =>
+                        <CarrouselItem key={item.id} {...item}/>
+                    )}
+                </Carrousel>
+            </Categories>
+
+            <Categories title="Originales">
+                <Carrousel>
+                     {videos.originals.map(item =>
+                        <CarrouselItem key={item.id} {...item}/>
+                    )}                                 
+                </Carrousel>
+            </Categories>
+
+            <Footer/>
+
+        </div>
+    )
+}
+
 
 export default App;
