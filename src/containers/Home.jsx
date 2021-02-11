@@ -1,32 +1,26 @@
-import Header from '../components/header'
+import React from 'react'   
+import {connect} from 'react-redux'
 import Search from '../components/Search'
 import Carrousel from '../components/Carrousel'
 import Categories from '../components/Categories'
 import CarrouselItem from '../components/CarrouselItem'
-import Footer from '../components/Footer'
-import useInitialState from '../hooks/useInitialState'
 
 import '../assets/styles/App.css';
 
 
-const API = 'http://localhost:3000/initialState'
 
-const App = () => {
+const Home = ( {myList, trends , originals}) => {   
 
-    const initialState = useInitialState(API)
+    return(
 
-    return initialState.length === 0 ? <h1>Loading...</h1> : (
-
-        <div className="app">
-
-            <Header/>
+        <>
             <Search/>
 
-            {initialState.mylist.length > 0 &&
+            {myList.length > 0 &&
 
                 <Categories title="Mi lista">
                     <Carrousel>
-                    {initialState.mylist.map(item =>
+                    {myList.map(item =>
                         <CarrouselItem key={item.id} {...item}/>
                     )}
                     </Carrousel>
@@ -36,7 +30,7 @@ const App = () => {
 
             <Categories title="Tendecias">
                 <Carrousel>
-                    {initialState.trends.map(item =>
+                    {trends.map(item =>
                         <CarrouselItem key={item.id} {...item}/>
                     )}
                 </Carrousel>
@@ -44,17 +38,26 @@ const App = () => {
 
             <Categories title="Originales">
                 <Carrousel>
-                     {initialState.originals.map(item =>
+                     {originals.map(item =>
                         <CarrouselItem key={item.id} {...item}/>
                     )}                                 
                 </Carrousel>
-            </Categories>
+            </Categories>           
 
-            <Footer/>
-
-        </div>
+        </>
     )
 }
 
 
-export default App;
+const mapStateToProps = state => {
+
+    return {
+
+        myList: state.myList,
+        trends: state.trends,
+        originals: state.originals
+    }
+}
+
+
+export default connect( mapStateToProps , null)(Home)
