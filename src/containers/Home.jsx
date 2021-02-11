@@ -12,7 +12,6 @@ import '../assets/styles/App.css';
 const Home = ( {myList, trends , originals}) => {   
 
     return(
-
         <>
             <Search/>
 
@@ -21,7 +20,11 @@ const Home = ( {myList, trends , originals}) => {
                 <Categories title="Mi lista">
                     <Carrousel>
                     {myList.map(item =>
-                        <CarrouselItem key={item.id} {...item}/>
+                        <CarrouselItem 
+                            key={item.id} 
+                            {...item}
+                            isList = {true}
+                        />
                     )}
                     </Carrousel>
                 </Categories>
