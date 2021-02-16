@@ -4,6 +4,7 @@ import Search from '../components/Search'
 import Carrousel from '../components/Carrousel'
 import Categories from '../components/Categories'
 import CarrouselItem from '../components/CarrouselItem'
+import Header from "../components/header";
 
 import '../assets/styles/App.css';
 
@@ -13,7 +14,8 @@ const Home = ( {myList, trends , originals}) => {
 
     return(
         <>
-            <Search/>
+            <Header/>
+            <Search isHome/>
 
             {myList.length > 0 &&
 
