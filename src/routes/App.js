@@ -11,7 +11,7 @@ import Player from '../containers/Player';
 
 const App = () => (
 
-    <BrowserRouter basename='/build'>
+    <BrowserRouter basename='/build/'>
         <Layout>
             <Switch>
                 <Route exact path="/" component={Home}/>
